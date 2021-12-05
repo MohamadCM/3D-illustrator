@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
@@ -124,9 +125,19 @@ class ScannedBarcodeActivity : AppCompatActivity() {
                                     startCamera()
                                 }
                                 .show()
-                            val myIntent = Intent(this@ScannedBarcodeActivity, ModelViewer::class.java)
+                            /*val myIntent = Intent(this@ScannedBarcodeActivity, ModelViewer::class.java)
                             myIntent.putExtra("model", barcodeList[0].rawValue!!) //Optional parameters
-                            this@ScannedBarcodeActivity.startActivity(myIntent)
+                            this@ScannedBarcodeActivity.startActivity(myIntent)*/
+                            val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
+
+                            sceneViewerIntent.data =
+                                Uri.parse("https://arvr.google.com/scene-viewer/1.0?file=https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Fox/glTF/Fox.gltf")
+                            "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/2CylinderEngine/glTF/2CylinderEngine.gltf"
+                            "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Box/glTF/Box.gltf"
+                            "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF/Avocado.gltf"
+                            sceneViewerIntent.setPackage("com.google.android.googlequicksearchbox")
+                            startActivity(sceneViewerIntent)
+
                         }
                     }
                 }.addOnFailureListener {
