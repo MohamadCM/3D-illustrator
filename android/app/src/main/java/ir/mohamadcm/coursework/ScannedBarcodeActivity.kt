@@ -123,40 +123,49 @@ class ScannedBarcodeActivity : AppCompatActivity() {
                             Log.e(TAG, "processImageProxy: " + barcodeList[0].rawValue)
                             cameraProvider.unbindAll()
                             //setFlashOffIcon()
+                            val barcodeVal = barcodeList[0].rawValue!!.split("key=");
+                            var snackBarText: String = "Wrong QR code!";
+                            var wrongQR = true
+                            if (barcodeVal.size >= 2) {
+                                snackBarText = barcodeVal[1]
+                                wrongQR = false
+                            }
                             Snackbar.make(
                                 this@ScannedBarcodeActivity, binding.clMain,
-                                "${barcodeList[0].rawValue!!}", Snackbar.LENGTH_INDEFINITE
+                                "$snackBarText", Snackbar.LENGTH_INDEFINITE
                             )
                                 .setAction("Retry") {
                                     startCamera()
                                 }
                                 .show()
-                            /*val myIntent = Intent(this@ScannedBarcodeActivity, ModelViewer::class.java)
-                            myIntent.putExtra("model", barcodeList[0].rawValue!!) //Optional parameters
-                            this@ScannedBarcodeActivity.startActivity(myIntent)*/
-                            // ...
-                            // Instantiate the RequestQueue.
-                            val queue = Volley.newRequestQueue(this)
-                            val url = barcodeList[0].rawValue
+                            if (!wrongQR) {
+                                // Instantiate the RequestQueue.
+                                val queue = Volley.newRequestQueue(this)
+                                val url = barcodeList[0].rawValue
 
-                            // Request a string response from the provided URL.
-                            val stringRequest = StringRequest(
-                                Request.Method.GET, url,
-                                Response.Listener<String> { response ->
-                                    // Display the first 500 characters of the response string.
-                                    Log.e("SHIT","Response is: $response")
-                                    val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
+                                // Request a string response from the provided URL.
+                                val stringRequest = StringRequest(
+                                    Request.Method.GET, url,
+                                    Response.Listener<String> { response ->
+                                        // Display the first 500 characters of the response string.
+                                        Log.i("Successful scan", "Response is: $response")
+                                        val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
 
-                                    sceneViewerIntent.data =
-                                        Uri.parse("https://arvr.google.com/scene-viewer/1.0?file=$response")
-                                    sceneViewerIntent.setPackage("com.google.android.googlequicksearchbox")
-                                    startActivity(sceneViewerIntent)
-                                },
-                                Response.ErrorListener { Log.e("SHIT","Response is: did not work!") })
+                                        sceneViewerIntent.data =
+                                            Uri.parse("https://arvr.google.com/scene-viewer/1.0?file=$response")
+                                        sceneViewerIntent.setPackage("com.google.android.googlequicksearchbox")
+                                        startActivity(sceneViewerIntent)
+                                    },
+                                    Response.ErrorListener {
+                                        Log.e(
+                                            "Unsuccessful Scan!",
+                                            "Response is: did not work!"
+                                        )
+                                    })
 
                                 // Add the request to the RequestQueue.
-                            queue.add(stringRequest)
-
+                                queue.add(stringRequest)
+                            }
                         }
                     }
                 }.addOnFailureListener {
