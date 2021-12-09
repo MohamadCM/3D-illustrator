@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
@@ -14,6 +15,10 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScanning
@@ -52,11 +57,11 @@ class ScannedBarcodeActivity : AppCompatActivity() {
         }
 
         binding.imgFlashLight.setOnClickListener {
-            if (camera != null){
-                if (camera.cameraInfo.torchState.value == TorchState.ON){
+            if (camera != null) {
+                if (camera.cameraInfo.torchState.value == TorchState.ON) {
                     //setFlashOffIcon()
                     camera.cameraControl.enableTorch(false)
-                }else {
+                } else {
                     //setFlashOnIcon()
                     camera.cameraControl.enableTorch(true)
                 }
@@ -114,19 +119,44 @@ class ScannedBarcodeActivity : AppCompatActivity() {
             barcodeScanner.process(inputImage)
                 .addOnSuccessListener { barcodeList ->
                     if (!barcodeList.isNullOrEmpty()) {
-                        if (!barcodeList[0].rawValue.isNullOrEmpty()){
+                        if (!barcodeList[0].rawValue.isNullOrEmpty()) {
                             Log.e(TAG, "processImageProxy: " + barcodeList[0].rawValue)
                             cameraProvider.unbindAll()
                             //setFlashOffIcon()
-                            Snackbar.make(this@ScannedBarcodeActivity,binding.clMain,
-                                "${barcodeList[0].rawValue!!}",Snackbar.LENGTH_INDEFINITE)
+                            Snackbar.make(
+                                this@ScannedBarcodeActivity, binding.clMain,
+                                "${barcodeList[0].rawValue!!}", Snackbar.LENGTH_INDEFINITE
+                            )
                                 .setAction("Retry") {
                                     startCamera()
                                 }
                                 .show()
-                            val myIntent = Intent(this@ScannedBarcodeActivity, ModelViewer::class.java)
+                            /*val myIntent = Intent(this@ScannedBarcodeActivity, ModelViewer::class.java)
                             myIntent.putExtra("model", barcodeList[0].rawValue!!) //Optional parameters
-                            this@ScannedBarcodeActivity.startActivity(myIntent)
+                            this@ScannedBarcodeActivity.startActivity(myIntent)*/
+                            // ...
+                            // Instantiate the RequestQueue.
+                            val queue = Volley.newRequestQueue(this)
+                            val url = barcodeList[0].rawValue
+
+                            // Request a string response from the provided URL.
+                            val stringRequest = StringRequest(
+                                Request.Method.GET, url,
+                                Response.Listener<String> { response ->
+                                    // Display the first 500 characters of the response string.
+                                    Log.e("SHIT","Response is: $response")
+                                    val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
+
+                                    sceneViewerIntent.data =
+                                        Uri.parse("https://arvr.google.com/scene-viewer/1.0?file=$response")
+                                    sceneViewerIntent.setPackage("com.google.android.googlequicksearchbox")
+                                    startActivity(sceneViewerIntent)
+                                },
+                                Response.ErrorListener { Log.e("SHIT","Response is: did not work!") })
+
+                                // Add the request to the RequestQueue.
+                            queue.add(stringRequest)
+
                         }
                     }
                 }.addOnFailureListener {
@@ -158,7 +188,11 @@ class ScannedBarcodeActivity : AppCompatActivity() {
                 startCamera()
             } else {
                 //show custom dialog of camera permission if permission is permanently denied
-                Toast.makeText(applicationContext, "Please allow camera permission!", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    applicationContext,
+                    "Please allow camera permission!",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
@@ -174,7 +208,11 @@ class ScannedBarcodeActivity : AppCompatActivity() {
                 if (isCameraPermissionGranted()) {
                     startCamera()
                 } else {
-                    Toast.makeText(applicationContext, "Please allow camera permission!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        applicationContext,
+                        "Please allow camera permission!",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }
@@ -190,13 +228,13 @@ class ScannedBarcodeActivity : AppCompatActivity() {
         )
     }*/
 
-   /* private fun setFlashOnIcon(){
-        binding.imgFlashLight.setImageDrawable(
-            ResourcesCompat.getDrawable(
-                resources,
-                R.drawable.ic_flash_on_24,
-                null
-            )
-        )
-    }*/
+    /* private fun setFlashOnIcon(){
+         binding.imgFlashLight.setImageDrawable(
+             ResourcesCompat.getDrawable(
+                 resources,
+                 R.drawable.ic_flash_on_24,
+                 null
+             )
+         )
+     }*/
 }
