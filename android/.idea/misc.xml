@@ -4,7 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/uni/android/3D-illustrator/android/app/src/main/res/layout/activity_main.xml" value="0.2222222222222222" />
-        <entry key="..\:/uni/android/3D-illustrator/android/app/src/main/res/layout/activity_scan_launcher.xml" value="0.11145833333333334" />
+        <entry key="..\:/uni/android/3D-illustrator/android/app/src/main/res/layout/activity_scan_launcher.xml" value="0.1" />
+        <entry key="..\:/uni/android/3D-illustrator/android/app/src/main/res/layout/activity_scanned_barcode.xml" value="0.11145833333333334" />
       </map>
     </option>
   </component>

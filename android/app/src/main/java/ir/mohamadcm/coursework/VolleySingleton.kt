@@ -5,9 +5,14 @@ import android.graphics.Bitmap
 import android.util.LruCache
 import com.android.volley.Request
 import com.android.volley.RequestQueue
+import com.android.volley.Response
 import com.android.volley.toolbox.Volley
 import com.android.volley.toolbox.ImageLoader
+import com.android.volley.toolbox.StringRequest
 
+object Constants {
+    const val baseURL = "https://nightly.smartfund.iknito.com/api/v1/md/"
+}
 class VolleySingleton constructor(context: Context) {
     companion object {
         @Volatile
@@ -38,5 +43,12 @@ class VolleySingleton constructor(context: Context) {
         requestQueue.add(req)
     }
 
+//    fun login(username: String, password: String, handler: () -> Unit, errorHandler: () -> Void?) {
+//        val stringRequest = StringRequest(
+//            Request.Method.GET, "${Constants.baseURL}user?username=${username}&password=${password}",
+//            Response.Listener<String> { response -> handler(response) },
+//            Response.ErrorListener {errorHandler()})
+//        addToRequestQueue(stringRequest)
+//    }
 
 }
