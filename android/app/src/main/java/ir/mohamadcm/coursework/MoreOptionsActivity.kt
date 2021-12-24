@@ -1,19 +1,17 @@
 package ir.mohamadcm.coursework
 
-import androidx.appcompat.app.AppCompatActivity
+import android.R
 import android.os.Bundle
-import android.widget.Switch
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import ir.mohamadcm.coursework.databinding.ActivityMoreOptionsBinding
+
 
 class MoreOptionsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMoreOptionsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_more_options)
-
         binding = ActivityMoreOptionsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

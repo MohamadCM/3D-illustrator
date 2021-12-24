@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import ir.mohamadcm.coursework.databinding.ActivityMainBinding
 import android.util.Patterns
+import androidx.appcompat.app.AppCompatDelegate
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -30,6 +31,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.progress.visibility = View.GONE
+
+        // Set Default Theme to light
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         // Login Button Logic
         binding.buttonLogin.setOnClickListener(View.OnClickListener { view ->
