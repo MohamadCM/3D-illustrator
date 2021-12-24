@@ -23,4 +23,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/launch_scan"/>
+
+    <Button
+        android:id="@+id/button_opt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="More options" />
 </androidx.appcompat.widget.LinearLayoutCompat>

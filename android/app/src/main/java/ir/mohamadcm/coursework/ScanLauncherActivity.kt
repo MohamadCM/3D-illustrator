@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import ir.mohamadcm.coursework.databinding.ActivityMainBinding
 import ir.mohamadcm.coursework.databinding.ActivityScanLauncherBinding
 
 class ScanLauncherActivity : AppCompatActivity() {
@@ -20,6 +19,11 @@ class ScanLauncherActivity : AppCompatActivity() {
 
         binding.launchScan.setOnClickListener(View.OnClickListener { view ->
             val myIntent = Intent(this@ScanLauncherActivity, ScannedBarcodeActivity::class.java)
+            this@ScanLauncherActivity.startActivity(myIntent)
+        })
+
+        binding.buttonOpt.setOnClickListener(View.OnClickListener { view ->
+            val myIntent = Intent(this@ScanLauncherActivity, MoreOptionsActivity::class.java)
             this@ScanLauncherActivity.startActivity(myIntent)
         })
     }

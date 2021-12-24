@@ -15,8 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TipTime">
         <activity
+            android:name=".MoreOptionsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ScanLauncherActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".ModelViewer"
             android:exported="false" />
