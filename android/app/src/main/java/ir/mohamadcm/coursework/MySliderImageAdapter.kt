@@ -30,7 +30,8 @@ class MySliderImageAdapter() :
 
     override fun onBindViewHolder(viewHolder: VH, position: Int) {
         //Showing the text
-        viewHolder.textView.text = mSliderItems[position].split(":")[1]
+        val splitted = mSliderItems[position].split("/");
+        viewHolder.textView.text = splitted[splitted.size - 1].split(".")[0]
         //load image into view
         Picasso.get().load(mSliderItems[position]).fit().into(viewHolder.imageView)
     }
