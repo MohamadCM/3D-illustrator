@@ -4,19 +4,20 @@ import android.animation.Animator
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
-import ir.mohamadcm.coursework.databinding.ActivityScanLauncherBinding
+import android.util.Log
 import ir.mohamadcm.coursework.databinding.ActivitySplashBinding
 
 class SplashActivity : AppCompatActivity() {
 
+    var myPref: String  = "MyPrefsFile"
     private lateinit var binding: ActivitySplashBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
+        val prefs = getSharedPreferences(myPref, MODE_PRIVATE)
+        val isLoggedIn = prefs.getString("isLoggedIn", "no")
 
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -26,8 +27,15 @@ class SplashActivity : AppCompatActivity() {
             }
 
             override fun onAnimationEnd(animation: Animator?) {
-                val myIntent = Intent(this@SplashActivity, MainActivity::class.java)
-                this@SplashActivity.startActivity(myIntent)
+                if (isLoggedIn == "yes") {
+                    val myIntent = Intent(this@SplashActivity, ScanLauncherActivity::class.java)
+                    this@SplashActivity.startActivity(myIntent)
+                    finish()
+                } else if (isLoggedIn == "no") {
+                    val myIntent = Intent(this@SplashActivity, MainActivity::class.java)
+                    this@SplashActivity.startActivity(myIntent)
+                    finish()
+                }
             }
 
             override fun onAnimationCancel(animation: Animator?) {
