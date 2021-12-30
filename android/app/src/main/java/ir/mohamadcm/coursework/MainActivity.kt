@@ -14,10 +14,15 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 
 import java.util.regex.Pattern
+import android.content.SharedPreferences
+
+
+
 
 
 class MainActivity : AppCompatActivity() {
 
+    var myPref: String  = "MyPrefsFile"
     // Binding object instance with access to the views in the activity_main.xml layout
     private lateinit var binding: ActivityMainBinding
 
@@ -25,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val queue = VolleySingleton.getInstance(this.applicationContext).requestQueue
         // Inflate the layout XML file and return a binding object instance
+
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         // Set the content view of the Activity to be the root view of the layout
@@ -63,6 +69,11 @@ class MainActivity : AppCompatActivity() {
                         binding.progress.visibility = View.GONE
                         if (response.toBoolean()) { // Login Successful
                             Toast.makeText(applicationContext, "Logged In Successfully!", Toast.LENGTH_LONG).show()
+
+                            val editor = getSharedPreferences(myPref, MODE_PRIVATE).edit()
+                            editor.putString("isLoggedIn", "yes");
+                            editor.apply();
+
                             val myIntent = Intent(this@MainActivity, ScanLauncherActivity::class.java)
                             this@MainActivity.startActivity(myIntent)
                             finish()
@@ -106,6 +117,10 @@ class MainActivity : AppCompatActivity() {
                     { response ->
                         binding.progress.visibility = View.GONE
                         if (response.toBoolean()) { // Register Successful
+                            val editor = getSharedPreferences(myPref, MODE_PRIVATE).edit()
+                            editor.putString("isLoggedIn", "yes");
+                            editor.apply();
+                            
                             Toast.makeText(applicationContext, "Registration Was Successful!", Toast.LENGTH_LONG).show()
                             val myIntent = Intent(this@MainActivity, ScanLauncherActivity::class.java)
                             this@MainActivity.startActivity(myIntent)
