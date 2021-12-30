@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="Dark theme"
+        android:text="@string/dark_theme"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/button_theme_switch"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,25 +31,28 @@
 
     <Button
         android:id="@+id/button_file"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:text="Choose File"
-        app:layout_constraintEnd_toStartOf="@+id/button_send"
-        app:layout_constraintTop_toBottomOf="@+id/ThemSwitchText" />
+        android:layout_margin="0dp"
+        android:layout_marginTop="12dp"
+        android:elevation="10sp"
+        android:text="@string/choose_file"
+        app:layout_constraintEnd_toStartOf="@+id/progressBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
         android:id="@+id/button_send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginTop="60dp"
-        android:text="Upload File"
+        android:layout_margin="2dp"
+        android:layout_marginEnd="36dp"
+        android:enabled="false"
+        android:text="@string/upload_file"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ThemSwitchText"
-        android:enabled="false"/>
+        app:layout_constraintStart_toEndOf="@+id/progressBar"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -60,30 +63,30 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="16dp">
 
+
+        <com.smarteist.autoimageslider.SliderView
+            android:id="@+id/imageSlider"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/cardView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:sliderAnimationDuration="600"
+            app:sliderAutoCycleDirection="back_and_forth"
+            app:sliderAutoCycleEnabled="true"
+            app:sliderIndicatorAnimationDuration="600"
+            app:sliderIndicatorGravity="center_horizontal|bottom"
+            app:sliderIndicatorOrientation="horizontal"
+            app:sliderIndicatorSelectedColor="#3F51B5"
+            app:sliderIndicatorUnselectedColor="#8F8F8F"
+            app:sliderScrollTimeInSec="10"
+            app:sliderStartAutoCycle="true" />
     </androidx.cardview.widget.CardView>
 
-
-    <com.smarteist.autoimageslider.SliderView
-        android:id="@+id/imageSlider"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:sliderAnimationDuration="600"
-        app:sliderAutoCycleDirection="back_and_forth"
-        app:sliderAutoCycleEnabled="true"
-        app:sliderIndicatorAnimationDuration="600"
-        app:sliderIndicatorGravity="center_horizontal|bottom"
-        app:sliderIndicatorOrientation="horizontal"
-        app:sliderIndicatorSelectedColor="#3F51B5"
-        app:sliderIndicatorUnselectedColor="#8F8F8F"
-        app:sliderScrollTimeInSec="10"
-        app:sliderStartAutoCycle="true" />
 
     <TextView
         android:id="@+id/textView2"
@@ -91,9 +94,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
-        android:text="Recent QRs:"
+        android:text="@string/recent_qrs"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/imageSlider"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -103,7 +106,8 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
-        android:text="Upload model:"
+        android:text="@string/upload_model_gltf_files_only"
+        android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/button_file"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
