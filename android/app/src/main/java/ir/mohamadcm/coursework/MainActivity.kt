@@ -17,12 +17,10 @@ import java.util.regex.Pattern
 import android.content.SharedPreferences
 
 
-
-
-
 class MainActivity : AppCompatActivity() {
 
-    var myPref: String  = "MyPrefsFile"
+    var myPref: String = "MyPrefsFile"
+
     // Binding object instance with access to the views in the activity_main.xml layout
     private lateinit var binding: ActivityMainBinding
 
@@ -42,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         // Login Button Logic
-        binding.buttonLogin.setOnClickListener(View.OnClickListener { view ->
+        binding.buttonLogin.setOnClickListener {
             val emailText = binding.editEmail.editText?.text
             val passwordText = binding.editPassword.editText?.text
 
@@ -64,34 +62,48 @@ class MainActivity : AppCompatActivity() {
             if (isValid) {
                 binding.progress.visibility = View.VISIBLE
                 val stringRequest = StringRequest(
-                    Request.Method.GET, "https://nightly.smartfund.iknito.com/api/v1/md/user?username=${emailText}&password=${passwordText}",
+                    Request.Method.GET,
+                    "https://nightly.smartfund.iknito.com/api/v1/md/user?username=${emailText}&password=${passwordText}",
                     { response ->
                         binding.progress.visibility = View.GONE
                         if (response.toBoolean()) { // Login Successful
-                            Toast.makeText(applicationContext, "Logged In Successfully!", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                applicationContext,
+                                "Logged In Successfully!",
+                                Toast.LENGTH_LONG
+                            ).show()
 
                             val editor = getSharedPreferences(myPref, MODE_PRIVATE).edit()
                             editor.putString("isLoggedIn", "yes");
                             editor.apply();
 
-                            val myIntent = Intent(this@MainActivity, ScanLauncherActivity::class.java)
+                            val myIntent =
+                                Intent(this@MainActivity, ScanLauncherActivity::class.java)
                             this@MainActivity.startActivity(myIntent)
                             finish()
                         } else { // Login Failed
-                            Toast.makeText(applicationContext, "Wrong Credentials, Try Again!", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                applicationContext,
+                                "Wrong Credentials, Try Again!",
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
                     },
                     {
                         binding.progress.visibility = View.GONE
-                        Toast.makeText(applicationContext, "Something Went Wrong!", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            applicationContext,
+                            "Something Went Wrong!",
+                            Toast.LENGTH_LONG
+                        ).show()
                     })
                 VolleySingleton.getInstance(this).addToRequestQueue(stringRequest)
             }
 //            myIntent.putExtra("user-name", 1) //Optional parameters
-        })
+        }
 
         // Register Button Logic
-        binding.buttonRegister.setOnClickListener(View.OnClickListener { view ->
+        binding.buttonRegister.setOnClickListener {
             val emailText = binding.editEmail.editText?.text
             val passwordText = binding.editPassword.editText?.text
 
@@ -113,30 +125,88 @@ class MainActivity : AppCompatActivity() {
             if (isValid) {
                 binding.progress.visibility = View.VISIBLE
                 val stringRequest = StringRequest(
-                    Request.Method.POST, "https://nightly.smartfund.iknito.com/api/v1/md/user?username=${emailText}&password=${passwordText}",
+                    Request.Method.POST,
+                    "https://nightly.smartfund.iknito.com/api/v1/md/user?username=${emailText}&password=${passwordText}",
                     { response ->
                         binding.progress.visibility = View.GONE
                         if (response.toBoolean()) { // Register Successful
                             val editor = getSharedPreferences(myPref, MODE_PRIVATE).edit()
                             editor.putString("isLoggedIn", "yes");
                             editor.apply();
-                            
-                            Toast.makeText(applicationContext, "Registration Was Successful!", Toast.LENGTH_LONG).show()
-                            val myIntent = Intent(this@MainActivity, ScanLauncherActivity::class.java)
+
+                            Toast.makeText(
+                                applicationContext,
+                                "Registration Was Successful!",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            val myIntent =
+                                Intent(this@MainActivity, ScanLauncherActivity::class.java)
                             this@MainActivity.startActivity(myIntent)
                             finish()
                         } else {
-                            Toast.makeText(applicationContext, "Registration Failed, Try Again!", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                applicationContext,
+                                "Registration Failed, Try Again!",
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
                     },
                     {
                         binding.progress.visibility = View.GONE
-                        Toast.makeText(applicationContext, "Something Went Wrong!", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            applicationContext,
+                            "Something Went Wrong!",
+                            Toast.LENGTH_LONG
+                        ).show()
                     })
                 VolleySingleton.getInstance(this).addToRequestQueue(stringRequest)
             }
-        })
+        }
+
+        // Forgot password Logic
+        binding.buttonReset.setOnClickListener {
+            val emailText = binding.editEmail.editText?.text
+
+            binding.editEmail.editText?.error = null
+
+            val emailPattern = Patterns.EMAIL_ADDRESS
+
+            var isValid = true
+            if (!emailPattern.matcher(emailText).matches()) {
+                binding.editEmail.editText?.error = "Invalid Email"
+                isValid = false
+            }
+            if (isValid) {
+                binding.progress.visibility = View.VISIBLE
+                val stringRequest = StringRequest(
+                    Request.Method.GET,
+                    "https://nightly.smartfund.iknito.com/api/v1/md/reset?username=${emailText}",
+                    { response ->
+                        binding.progress.visibility = View.GONE
+                        if (response.toBoolean()) { // Login Successful
+                            Toast.makeText(
+                                applicationContext,
+                                "Instructions has been sent to your email!",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        } else { // Login Failed
+                            Toast.makeText(
+                                applicationContext,
+                                "Wrong email, Try Again!",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    },
+                    {
+                        binding.progress.visibility = View.GONE
+                        Toast.makeText(
+                            applicationContext,
+                            "Something Went Wrong!",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    })
+                VolleySingleton.getInstance(this).addToRequestQueue(stringRequest)
+            }
+        }
     }
-
-
 }
