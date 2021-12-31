@@ -79,7 +79,7 @@ class MoreOptionsActivity : AppCompatActivity() {
             binding.imageQr.isVisible = true;
         },ceil(rand * 5000).toLong())
         Toast.makeText(applicationContext, "Upload was successful!", Toast.LENGTH_LONG).show()
-        imageList.add("https://i.ibb.co/Pjs55cY/box.png")
+        imageList.add("https://i.ibb.co/DMXrB9Q/avocado.png")
         setImageInSlider(imageList, binding.imageSlider)
     }
 
