@@ -1,0 +1,1 @@
+This folder contains a few QRs that can be used inside the application.
